@@ -1,51 +1,15 @@
 <template>
-  <div>
-    <navigation></navigation>>
-    <button @click="selectedComponent = 'AppNotLoading'">Loading...</button>
-    <button @click="selectedComponent = 'AppNotSucces'">Succes</button>
-    <button @click="selectedComponent = ''">Clear!</button>
-    <component :is="selectedComponent">
-    <!-- <app-not-loading></app-not-loading>
-    <app-not-succes></app-not-succes> -->
-    </component>
-    <div class="home d-md-flex flex-md-equal my-md-3 pl-md-3">
-      <div style=" padding-left: 7%; padding-top:3%;" class="col-md-7">
-        <h2 class="featurette-heading">
-          Here you will find the treks you've
-          <span class="text-highlighted">
-            always dreamed
-            about!
-          </span>
-        </h2>
-        <p class="lead">1. Join our family.</p>
-        <p style="padding-left:5%" class="lead">2. Request the trek you've always wanted.</p>
-        <p style="padding-left:10%" class="lead">3. Find people who like your idea.</p>
-        <p class="lead">If you find enough supporters, we will organize everything for you!</p>
-      </div>
-      <div class="col-md-5">
-        <img class="home-picture" src="assets/logo.png" />
-      </div>
-    </div>
-    <app-home-full :newss="news" @onChange="news = $event" ></app-home-full>
-    <app-footer ></app-footer>
-  </div>
+ <app-home></app-home>
 </template>
 
 <script>
-import Navigation from "./components/Navigation.vue";
-import AppFooter from "./components/app-footer.vue";
-import AppHomeFull from "./components/app-home-full";
-import AppNotSucces from "./components/app-not-succes.vue";
-import AppNotLoading from "./components/app-not-loading.vue";
+import AppHome from "./components/app-home.vue";
+
 
 export default {
   name: "App",
   components: {
-    Navigation,
-    AppFooter,
-    AppHomeFull,
-    AppNotSucces,
-    AppNotLoading
+    AppHome,
   },
   data: function() {
     return {
