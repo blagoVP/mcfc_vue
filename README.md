@@ -1,24 +1,24 @@
-# mcfc
+# Manchester_City_FC_BG_community (mcfc)
 
-## Project setup
-```
-npm install
-```
+This project was generated with [Vue CLI]https://github.com/vuejs/vue-cli) version 4.2.3.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Idea
 
-### Compiles and minifies for production
-```
-npm run build
-```
+An application where users from Bulgaria can public news for their favourite football team - Manchester City FC and can comment about it.
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Public part
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Anonymus user
+- User has access to register page.
+- User has access to login page.
+
+## Private part
+
+Authorized user
+- User can add news.
+- User has access to all news.
+- User can comment about all published news.
+
+## Design
+
+Responsive
