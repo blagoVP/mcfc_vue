@@ -5,6 +5,7 @@
     <button @click="selectedComponent = 'AppNotSucces'">Succes</button>
     <button @click="selectedComponent = 'AppRegister'">Register</button>
     <button @click="selectedComponent = 'AppLogin'">Login</button>
+    <button @click="selectedComponent = 'AppCreate'">Create</button>
     <button @click="selectedComponent = ''">Clear!</button>
     <component :is="selectedComponent"></component>
     <div class="home d-md-flex flex-md-equal my-md-3 pl-md-3">
@@ -37,7 +38,8 @@ import AppHomeFull from "./app-home-full";
 import AppNotSucces from "./shared/app-not-succes.vue";
 import AppNotLoading from "./shared/app-not-loading.vue";
 import AppRegister from "./auth/app-register.vue";
-import AppLogin from "./auth/app-login.vue"
+import AppLogin from "./auth/app-login.vue";
+import AppCreate from "./app-create.vue"
 
 export default {
   name: "app-home",
@@ -48,7 +50,8 @@ export default {
     AppNotSucces,
     AppNotLoading,
     AppRegister,
-    AppLogin
+    AppLogin, 
+    AppCreate
   },
   data: function() {
     return {

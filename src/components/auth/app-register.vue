@@ -17,8 +17,8 @@
         />
         <label for="inputUsername">Username</label>
         <template v-if="$v.username.$error">
-          <div v-if="!$v.username.required">Username is required</div>
-          <div v-if="!$v.username.minLength">Username should be at least 5 chars</div>
+          <p v-if="!$v.username.required">Username is required</p>
+          <p v-if="!$v.username.minLength">Username should be at least 5 chars</p>
           <!-- moje s v-else-if da se pokazwa samo edna, ako sa pove4e validacii -->
         </template>
       </div>
@@ -34,8 +34,8 @@
         />
         <label for="inputPassword">Password</label>
         <template v-if="$v.password.$error">
-          <div v-if="!$v.password.required">Password is required</div>
-          <div v-if="!$v.password.minLength">Password should be at least 8 symbols</div>
+          <p v-if="!$v.password.required">Password is required</p>
+          <p v-if="!$v.password.minLength">Password should be at least 8 symbols</p>
         </template>
       </div>
 
@@ -50,7 +50,7 @@
         />
         <label for="inputRePassword">Re-Password</label>
          <template v-if="$v.rePassword.$error">
-          <div v-if="!$v.rePassword.sameAs">Password don't match</div>
+          <p v-if="!$v.rePassword.sameAs">Password don't match</p>
         </template>
       </div>
 

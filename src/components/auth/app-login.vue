@@ -16,9 +16,9 @@
       />
       <label for="inputUsername">Username</label>
       <template v-if="$v.username.$error">
-          <div v-if="!$v.username.required">
+          <p v-if="!$v.username.required">
               Username is required
-          </div>
+          </p>
       </template>
     </div>
 
@@ -33,9 +33,9 @@
       />
       <label for="inputPassword">Password</label>
       <template v-if="$v.password.$error">
-          <div v-if="!$v.password.required">
+          <p v-if="!$v.password.required">
               Password is required
-          </div>
+          </p>
       </template>
     </div>
 
