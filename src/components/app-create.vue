@@ -9,14 +9,15 @@
       <input
         v-model="title"
         @blur="$v.title.$touch"
+        :class="{invalid: $v.title.$error && $v.title.$dirty, valid: !$v.title.$error && $v.title.$dirty}"
         class="form-control"
         placeholder="Title"
         autofocus
       />
       <label for="inputTrekName">Title</label>
       <template v-if="$v.title.$error">
-        <p v-if="!$v.title.required">Title is required</p>
-        <p v-if="!$v.title.minLength">Title should be at least 8 chars</p>
+        <p class="error-message" v-if="!$v.title.required">Title is required</p>
+        <p class="error-message" v-if="!$v.title.minLength">Title should be at least 8 chars</p>
       </template>
     </div>
 
@@ -28,14 +29,15 @@
     <div class="form-label-group">
       <textarea
         v-model="content"
-        @blur="$v.content.$touch"
+         @blur="$v.content.$touch"
+        :class="{invalid: $v.content.$error && $v.content.$dirty, valid: !$v.content.$error && $v.content.$dirty}"
         class="form-control"
         placeholder="Content"
       ></textarea>
       <label for="inputTrekDescription">Content</label>
       <template v-if="$v.content.$error">
-        <p v-if="!$v.content.required">Content is required</p>
-        <p v-if="!($v.content.minLength && $v.content.maxLength)">Content should be between 150 and 1500 chars</p>
+        <p class="error-message" v-if="!$v.content.required">Content is required</p>
+        <p class="error-message" v-if="!($v.content.minLength && $v.content.maxLength)">Content should be between 150 and 1500 chars</p>
       </template>
     </div>
 
@@ -43,14 +45,15 @@
       <input
         v-model="imgUrl"
         @blur="$v.imgUrl.$touch"
+        :class="{invalid: $v.imgUrl.$error && $v.imgUrl.$dirty, valid: !$v.imgUrl.$error && $v.imgUrl.$dirty}"
         class="form-control"
         placeholder="Image url"
         autofocus
       />
       <label for="inputTrekImage">Image</label>
       <template v-if="$v.imgUrl.$error">
-        <p v-if="!$v.imgUrl.required">Image url is required</p>
-        <p v-if="!$v.imgUrl.url">Please add valid url</p>
+        <p class="error-message" v-if="!$v.imgUrl.required">Image url is required</p>
+        <p class="error-message" v-if="!$v.imgUrl.url">Please add valid url</p>
       </template>
     </div>
 
@@ -59,16 +62,18 @@
 </template>
 
 <script>
-import { validationMixin } from "vuelidate";
-import { required, minLength, maxLength, url } from "vuelidate/lib/validators";
+import { validationMixin } from 'vuelidate';
+import { required, minLength, maxLength, url } from 'vuelidate/lib/validators';
+import axiosInstance from '../axios-collection-request';
 
 export default {
   mixins: [validationMixin],
   data() {
     return {
-      title: "",
-      content: "",
-      imgUrl: ""
+      title: '',
+      content: '',
+      imgUrl: '',
+      comments: []
     };
   },
   validations: {
@@ -88,17 +93,31 @@ export default {
   },
   methods: {
     submitHandler() {
-      //validiraneto se izvikva pri natiskaneto na butona:
-      // this.$v.$touch();
       if (this.$v.$invalid) {
-        console.log(this.$v.username);
         return;
       }
-      console.log("Form is submitted");
+      const data = { title: this.title, content: this.content, imgUrl: this.imgUrl, comments: this.comments };
+      axiosInstance
+        .post('', data)
+        .then(res => {
+          console.log(res);
+          this.$router.push("/home");
+        })
+        .catch(err => {
+          console.error(err);
+        });
     }
   }
 };
 </script>
 
-<style>
+<style scoped>
+
+p.error-message{
+  color: red;
+  font-style: italic;
+  text-align: center;
+}
+
+
 </style>

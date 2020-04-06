@@ -1,5 +1,5 @@
 <template>
-  <form @submit="submitHandler">
+  <form @submit.prevent="submitHandler">
     <div class="text-center mb-4">
       <h1 class="h3 mb-3 font-weight-normal">Login</h1>
     </div>
@@ -8,6 +8,7 @@
       <input
         v-model="username"
         @blur="$v.username.$touch"
+        :class="{invalid: $v.username.$error && $v.username.$dirty, valid: !$v.username.$error && $v.username.$dirty}"
         type="text"
         id="inputUsername"
         class="form-control"
@@ -16,9 +17,7 @@
       />
       <label for="inputUsername">Username</label>
       <template v-if="$v.username.$error">
-          <p v-if="!$v.username.required">
-              Username is required
-          </p>
+        <p class="error-message" v-if="!$v.username.required">Username is required</p>
       </template>
     </div>
 
@@ -26,6 +25,7 @@
       <input
         v-model="password"
         @blur="$v.password.$touch"
+        :class="{invalid: $v.password.$error && $v.password.$dirty, valid: !$v.password.$error && $v.password.$dirty}"
         type="password"
         id="inputPassword"
         class="form-control"
@@ -33,9 +33,7 @@
       />
       <label for="inputPassword">Password</label>
       <template v-if="$v.password.$error">
-          <p v-if="!$v.password.required">
-              Password is required
-          </p>
+        <p class="error-message" v-if="!$v.password.required">Password is required</p>
       </template>
     </div>
 
@@ -44,7 +42,7 @@
     <div class="text-center mb-4">
       <p class="alreadyUser">
         Don't have account? Then just
-        <a href="#">Sign-Up</a>!
+        <router-link to="/register">Sign-Up</router-link>!
       </p>
     </div>
 
@@ -55,9 +53,10 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required } from "vuelidate/lib/validators";
+import axiosInstance from "../../axios-request.js";
 
 export default {
-    mixins: [validationMixin],
+  mixins: [validationMixin],
   data() {
     return {
       username: "",
@@ -65,22 +64,34 @@ export default {
     };
   },
   validations: {
-      username:{
-          required
-      },
-      password:{
-          required
-      }
+    username: {
+      required
+    },
+    password: {
+      required
+    }
   },
   methods: {
-      submitHandler() {
-      //validiraneto se izvikva pri natiskaneto na butona:
-      // this.$v.$touch();
+    submitHandler() {
       if (this.$v.$invalid) {
-        console.log(this.$v.username);
         return;
       }
-      console.log("Form is submitted");
+      const data = { username: this.username, password: this.password };
+      axiosInstance
+        .post("/login", data)
+        .then(res => {
+          const user = res.data.username;
+          const token = res.data._kmd.authtoken;
+
+          localStorage.setItem("token", token);
+          localStorage.setItem("user", user);
+          this.$emit("onAuth", localStorage.getItem("user"));
+          console.log(res);
+          this.$router.push("/home");
+        })
+        .catch(err => {
+          console.error(err);
+        });
     }
   }
 };

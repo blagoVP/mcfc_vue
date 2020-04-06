@@ -1,36 +1,26 @@
 <template>
- <app-home></app-home>
+  <div>
+    <app-navigation @onAuth="hasUser = $event" :hasUser="hasUser" ></app-navigation>
+    <router-view @onAuth="hasUser = $event"></router-view>
+    <app-footer></app-footer>
+  </div>
 </template>
 
 <script>
-import AppHome from "./components/app-home.vue";
-
+import AppNavigation from './components/core/app-navigation.vue';
+import AppFooter from './components/core/app-footer.vue'
 
 export default {
   name: "App",
   components: {
-    AppHome,
+    AppNavigation,
+    AppFooter
   },
   data: function() {
     return {
-      selectedComponent: '',
-      news: [
-        {
-          title: "News1",
-          img: "https://i2-prod.manchestereveningnews.co.uk/incoming/article17494558.ece/ALTERNATES/s615/0_GettyImages-1196630243.jpg"
-        },
-        {
-          title: "News2",
-          img: "https://resources.premierleague.com/premierleague/photo/2018/12/03/7fa44372-3348-499f-8f08-acaa2cbcfed6/Sane-Aguero-man-City.jpg"
-        },
-        {
-          title: "News3",
-          img: "https://d3vlf99qeg6bpx.cloudfront.net/content/uploads/2019/09/21152847/Man-City-celebration-Watford.jpg"
-        },
-      ]
+      hasUser: localStorage.getItem('user'),
     };
-  },
-
+  }
 };
 </script>
 
@@ -43,9 +33,8 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 } */
-*{
+* {
   font-family: cursive;
-  
 }
 body {
   background-image: url("assets/mcfcLogo.jpg");
@@ -109,7 +98,7 @@ a {
   text-align: center;
   border-radius: 15px;
   font-size: 18px;
-  /* padding: 0.5rem 0;   */
+  padding: 0.5rem 0;  
   font-weight: bold;
 }
 .card-image {
@@ -203,10 +192,12 @@ form label {
 .single-trek-details {
   background-color: rgba(255, 255, 255, 0.849);
   padding: 2%;
+  position: relative;
+  left: 12%;
   margin: auto;
   max-width: 80%;
   border: solid;
-  border-radius: 1rem;
+  border-radius: 2rem;
   border-color: rgb(241, 179, 6);
   box-shadow: 0 0 1.5rem 0 rgba(0, 0, 0, 0.712);
 }
@@ -338,4 +329,26 @@ img {
 .no-found-template {
   color: rgba(255, 255, 255, 0.513);
 }
+
+input.valid{
+  border-color: green;
+}
+
+input.invalid{
+  border-color: red;
+}
+
+textarea.invalid{
+  border-color: red;
+}
+textarea.valid{
+  border-color: green;
+}
+
+p.error-message{
+  color: red;
+  font-style: italic;
+  text-align: center;
+}
+
 </style>

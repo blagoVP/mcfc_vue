@@ -1,51 +1,46 @@
 <template>
   <div id="treks-list">
-    <a
-      v-for="(n,i) in newss"
-      :key="i"
+    <router-link :to="'/details/' + n.id"
+      v-for="n in news"
+      :key="n.id"
       class="card overflow-hidden treksPlaceholder trek-details"
       style="width: 20rem; height: 18rem;"
     >
       <div class="card-body">
         <p class="card-text">{{ n.title }}</p>
       </div>
-      <input type="text" @change.stop.prevent="changeTitle($event, i)" />
-      <img class="card-image" :src="n.img" alt="Card image cap" />
-    </a>
+      <img class="card-image" :src="n.imgUrl" alt="Card image cap" />
+    </router-link>
   </div>
 </template>
 
 <script>
+
 export default {
   name: "app-home-full",
-  
   data: function() {
-    return {};
+    return {
+    };
   },
 
   props: {
-    newss: {
+    news: {
       type: Array,
-      validator: (arr)=>{
-        return arr.every((i) => typeof i.title === "string") &&
-        arr.every((i) => typeof i.img === "string");
+      validator: arr => {
+        return (
+          arr.every(i => typeof i.title === "string") &&
+          arr.every(i => typeof i.imgUrl === "string") &&
+          arr.every(i => typeof i.content === "string")
+        );
       },
       required: true,
-      default: function(){
-        return [{
-        title: "Default news",
-        img: "https://s.hs-data.com/bilder/teamfotos/640x360/750.jpg"
-      }]}
     }
   },
-
+  created() {
+   
+  },
   methods: {
-    changeTitle(e, i) {
-      const newTitle = e.target.value;
-      this.newss[i].title = newTitle;
-      this.$emit("onChange", this.newss);
-      e.target.value = "";
-    }
+  
   }
 };
 </script>
@@ -53,6 +48,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 a {
- cursor: pointer; 
+  cursor: pointer;
 }
 </style>
