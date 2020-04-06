@@ -10,6 +10,7 @@
         <input
           v-model="username"
           @blur="$v.username.$touch"
+          :class="{invalid: $v.username.$error && $v.username.$dirty, valid: !$v.username.$error && $v.username.$dirty}"
           id="inputUsername"
           class="form-control"
           placeholder="Username"
@@ -17,8 +18,8 @@
         />
         <label for="inputUsername">Username</label>
         <template v-if="$v.username.$error">
-          <p v-if="!$v.username.required">Username is required</p>
-          <p v-if="!$v.username.minLength">Username should be at least 5 chars</p>
+          <p class="error-message" v-if="!$v.username.required">Username is required</p>
+          <p class="error-message" v-if="!$v.username.minLength">Username should be at least 5 chars</p>
           <!-- moje s v-else-if da se pokazwa samo edna, ako sa pove4e validacii -->
         </template>
       </div>
@@ -27,6 +28,7 @@
         <input
           v-model="password"
           @blur="$v.password.$touch"
+          :class="{invalid: $v.password.$error && $v.password.$dirty, valid: !$v.password.$error  && $v.password.$dirty}"
           type="password"
           id="inputPassword"
           class="form-control"
@@ -34,8 +36,11 @@
         />
         <label for="inputPassword">Password</label>
         <template v-if="$v.password.$error">
-          <p v-if="!$v.password.required">Password is required</p>
-          <p v-if="!$v.password.minLength">Password should be at least 8 symbols</p>
+          <p class="error-message" v-if="!$v.password.required">Password is required</p>
+          <p
+            class="error-message"
+            v-if="!$v.password.minLength"
+          >Password should be at least 8 symbols</p>
         </template>
       </div>
 
@@ -43,25 +48,24 @@
         <input
           v-model="rePassword"
           @blur="$v.rePassword.$touch"
+          :class="{invalid: $v.rePassword.$error && $v.rePassword.$dirty, valid: !$v.rePassword.$error && $v.rePassword.$dirty}"
           type="password"
           id="inputRePassword"
           class="form-control"
           placeholder="Re-Password"
         />
         <label for="inputRePassword">Re-Password</label>
-         <template v-if="$v.rePassword.$error">
-          <p v-if="!$v.rePassword.sameAs">Password don't match</p>
+        <template v-if="$v.rePassword.$error">
+          <p class="error-message" v-if="!$v.rePassword.sameAs">Password don't match</p>
         </template>
       </div>
 
-      <button 
-      :disabled="$v.$invalid"
-      class="btn btn-lg btn-dark btn-block">Sign Up</button>
+      <button :disabled="$v.$invalid" class="btn btn-lg btn-dark btn-block">Sign Up</button>
 
       <div class="text-center mb-4">
         <p class="alreadyUser">
           Already have account? Then just
-          <a href="#">Sign-In</a>!
+          <router-link to="/login">Sign-In</router-link>!
         </p>
       </div>
 
@@ -73,6 +77,7 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, minLength, sameAs } from "vuelidate/lib/validators";
+import axiosInstance from "../../axios-request.js";
 
 export default {
   mixins: [validationMixin],
@@ -85,13 +90,26 @@ export default {
   },
   methods: {
     submitHandler() {
-      //validiraneto se izvikva pri natiskaneto na butona:
-      // this.$v.$touch();
       if (this.$v.$invalid) {
         console.log(this.$v.username);
         return;
       }
-      console.log("Form is submitted");
+      const data = { username: this.username, password: this.password };
+      axiosInstance
+        .post("/login", data)
+        .then(res => {
+          const user = res.data.username;
+          const token = res.data._kmd.authtoken;
+
+          localStorage.setItem('token', token);
+          localStorage.setItem('user', user);
+
+          console.log(res);
+          this.$router.push('/home');
+        })
+        .catch(err => {
+          console.error(err);
+        });
     }
   },
   validations: {
