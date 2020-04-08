@@ -351,4 +351,8 @@ p.error-message{
   text-align: center;
 }
 
+.purple {
+  color: rgb(128, 0, 79);
+}
+
 </style>

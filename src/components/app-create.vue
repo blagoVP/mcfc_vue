@@ -21,11 +21,6 @@
       </template>
     </div>
 
-    <!-- <div class="form-label-group">
-      <input type="text" name="dateTime" class="form-control" placeholder="Date" required />
-      <label for="inputTrekDate">Date</label>
-    </div>-->
-
     <div class="form-label-group">
       <textarea
         v-model="content"
@@ -84,7 +79,7 @@ export default {
     content: {
       required,
       minLength: minLength(150),
-      maxLength: maxLength(1500)
+      maxLength: maxLength(5500)
     },
     imgUrl: {
       required,
@@ -96,7 +91,14 @@ export default {
       if (this.$v.$invalid) {
         return;
       }
-      const data = { title: this.title, content: this.content, imgUrl: this.imgUrl, comments: this.comments };
+      const data = { 
+        title: this.title, 
+        content: this.content, 
+        imgUrl: this.imgUrl, 
+        comments: this.comments, 
+        organizer: localStorage.getItem('user'),
+        likes: 0};
+        
       axiosInstance
         .post('', data)
         .then(res => {

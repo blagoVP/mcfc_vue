@@ -10,7 +10,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use((config) => {
     config.url = `/user/${appKey}${config.url}`
-
+  
     return config;
 });
 

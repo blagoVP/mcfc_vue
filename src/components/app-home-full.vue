@@ -1,8 +1,8 @@
 <template>
   <div id="treks-list">
-    <router-link :to="'/details/' + n.id"
+    <router-link :to="'/details/' + n._id"
       v-for="n in news"
-      :key="n.id"
+      :key="n._id"
       class="card overflow-hidden treksPlaceholder trek-details"
       style="width: 20rem; height: 18rem;"
     >
@@ -30,7 +30,7 @@ export default {
         return (
           arr.every(i => typeof i.title === "string") &&
           arr.every(i => typeof i.imgUrl === "string") &&
-          arr.every(i => typeof i.content === "string")
+          arr.every(i => typeof i._id === "string")
         );
       },
       required: true,
