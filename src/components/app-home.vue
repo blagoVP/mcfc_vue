@@ -1,39 +1,31 @@
 <template>
   <div>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div id="fouronefour">
-            <img class="no-found-picture" src="../assets/city-success.jpg" />
-          </div>
-          <div class="no-found-template">
-            <h1 class="purple">There aren't any news, yet!</h1>
-            <h2 class="purple">Have you seen something interesting lately?</h2>
-            <div class="purple no-found-details">Be the first to publish!</div>
-            <div class="actions">
-              <router-link to="/create" class="btn btn-dark btn-lg">Create the first trek?</router-link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <app-home-full :news="news"></app-home-full>
+    <template v-if="news[0]">
+      <app-home-full :news="news"></app-home-full>
+    </template>
+    <template v-if="showEmptyPage">
+       <app-home-empty></app-home-empty>
+    </template>
   </div>
 </template>
 
 <script>
 import AppHomeFull from "./app-home-full";
+import AppHomeEmpty from "./app-home-empty.vue";
 import axiosInstance from "../axios-collection-request";
+
 
 export default {
   name: "app-home",
   components: {
-    AppHomeFull
-    ;] >>###
+    AppHomeFull,
+    AppHomeEmpty
   },
   data: function() {
     return {
-      news: []
+      news: [],
+      isLoading: true,
+      showEmptyPage: false
     };
   },
   methods: {
@@ -41,12 +33,18 @@ export default {
       axiosInstance
         .get()
         .then(res => {
+          console.log(res.data);
+          if (res.data.length == 0){
+            this.showEmptyPage = true;
+          }
           this.news = res.data;
           console.log(this.news);
         })
         .catch(err => {
           console.error(err);
         });
+        this.isLoading = false;
+    
     }
   },
   created() {
@@ -57,7 +55,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.purple {
-  color: purple;
-}
+
 </style>
