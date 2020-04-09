@@ -40,6 +40,7 @@ export default {
 <style scoped>
 footer {
   bottom: 0;
+  position: relative;
   width: 100%;
   height: 2.5rem;
 }
@@ -49,7 +50,7 @@ footer {
 }
 
 footer p {
-  position: relative;
+  /* position: relative; */
   float: left;
 }
 </style>

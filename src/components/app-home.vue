@@ -12,8 +12,7 @@
 <script>
 import AppHomeFull from "./app-home-full";
 import AppHomeEmpty from "./app-home-empty.vue";
-import axiosInstance from "../axios-collection-request";
-
+import collectionRequestMixin from "../axios-requests/collection-request-mixin";
 
 export default {
   name: "app-home",
@@ -21,39 +20,19 @@ export default {
     AppHomeFull,
     AppHomeEmpty
   },
+    created() {
+    this.getAllRequest();
+  },
+  mixins: [collectionRequestMixin],
   data: function() {
     return {
       news: [],
-      isLoading: true,
       showEmptyPage: false
     };
   },
-  methods: {
-    loadNews() {
-      axiosInstance
-        .get()
-        .then(res => {
-          console.log(res.data);
-          if (res.data.length == 0){
-            this.showEmptyPage = true;
-          }
-          this.news = res.data;
-          console.log(this.news);
-        })
-        .catch(err => {
-          console.error(err);
-        });
-        this.isLoading = false;
-    
-    }
-  },
-  created() {
-    this.loadNews();
-  }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 </style>

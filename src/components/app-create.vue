@@ -17,14 +17,17 @@
       <label for="inputTrekName">Title</label>
       <template v-if="$v.title.$error">
         <p class="error-message" v-if="!$v.title.required">Title is required</p>
-        <p class="error-message" v-if="!$v.title.minLength">Title should be at least 8 chars</p>
+        <p
+          class="error-message"
+          v-if="!($v.title.minLength && $v.title.maxLength)"
+        >Title should be between 8 and 70 chars</p>
       </template>
     </div>
 
     <div class="form-label-group">
       <textarea
         v-model="content"
-         @blur="$v.content.$touch"
+        @blur="$v.content.$touch"
         :class="{invalid: $v.content.$error && $v.content.$dirty, valid: !$v.content.$error && $v.content.$dirty}"
         class="form-control"
         placeholder="Content"
@@ -32,7 +35,10 @@
       <label for="inputTrekDescription">Content</label>
       <template v-if="$v.content.$error">
         <p class="error-message" v-if="!$v.content.required">Content is required</p>
-        <p class="error-message" v-if="!($v.content.minLength && $v.content.maxLength)">Content should be between 150 and 1500 chars</p>
+        <p
+          class="error-message"
+          v-if="!($v.content.minLength && $v.content.maxLength)"
+        >Content should be between 150 and 1500 chars</p>
       </template>
     </div>
 
@@ -57,24 +63,25 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate';
-import { required, minLength, maxLength, url } from 'vuelidate/lib/validators';
-import axiosInstance from '../axios-collection-request';
+import { validationMixin } from "vuelidate";
+import { required, minLength, maxLength, url } from "vuelidate/lib/validators";
+import collectionRequestMixin from "../axios-requests/collection-request-mixin";
 
 export default {
-  mixins: [validationMixin],
+  mixins: [validationMixin, collectionRequestMixin],
   data() {
     return {
-      title: '',
-      content: '',
-      imgUrl: '',
+      title: "",
+      content: "",
+      imgUrl: "",
       comments: []
     };
   },
   validations: {
     title: {
       required,
-      minLength: minLength(8)
+      minLength: minLength(8),
+      maxLength: maxLength(70)
     },
     content: {
       required,
@@ -91,35 +98,25 @@ export default {
       if (this.$v.$invalid) {
         return;
       }
-      const data = { 
-        title: this.title, 
-        content: this.content, 
-        imgUrl: this.imgUrl, 
-        comments: this.comments, 
-        organizer: localStorage.getItem('user'),
-        likes: 0};
-        
-      axiosInstance
-        .post('', data)
-        .then(res => {
-          console.log(res);
-          this.$router.push("/home");
-        })
-        .catch(err => {
-          console.error(err);
-        });
+      const data = {
+        title: this.title,
+        content: this.content,
+        imgUrl: this.imgUrl,
+        comments: this.comments,
+        organizer: localStorage.getItem("user"),
+        likes: 0
+      };
+      const url = "";
+      this.postRequest(url, data);
     }
   }
 };
 </script>
 
 <style scoped>
-
-p.error-message{
+p.error-message {
   color: red;
   font-style: italic;
   text-align: center;
 }
-
-
 </style>

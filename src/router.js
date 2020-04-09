@@ -4,7 +4,7 @@ const router = new VueRouter({
     mode: 'history',
     routes:
         [
-            {path: '/', redirect: '/home'},
+            { path: '/', redirect: '/home' },
             {
                 path: '/home', component: () => import('./components/app-home.vue'), beforeEnter(to, from, next) {
                     if (localStorage.getItem('user')) {

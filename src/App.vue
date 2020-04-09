@@ -106,6 +106,7 @@ a {
 }
 .card-text {
   top: 10px;
+  font-size: 15px
 }
 
 a.trek-details:hover {

@@ -1,26 +1,24 @@
 <template>
   <div id="treks-list">
-    <router-link :to="'/details/' + n._id"
-      v-for="n in news"
-      :key="n._id"
-      class="card overflow-hidden treksPlaceholder trek-details"
-      style="width: 20rem; height: 18rem;"
-    >
-      <div class="card-body">
-        <p class="card-text">{{ n.title }}</p>
-      </div>
-      <img class="card-image" :src="n.imgUrl" alt="Card image cap" />
-    </router-link>
+    <span v-for="n in news" :key="n._id"  class="card overflow-hidden treksPlaceholder trek-details">
+      <router-link
+        :to="{path: '/details/' + n._id, query: {organizer: n.organizer}}"
+        style="width: 20rem; height: 18rem;"
+      >
+        <div class="card-body">
+          <p class="card-text">{{ n.title }}</p>
+        </div>
+        <img class="card-image" :src="n.imgUrl" alt="Card image cap" />
+      </router-link>
+    </span>
   </div>
 </template>
 
 <script>
-
 export default {
   name: "app-home-full",
   data: function() {
-    return {
-    };
+    return {};
   },
 
   props: {
@@ -33,15 +31,11 @@ export default {
           arr.every(i => typeof i._id === "string")
         );
       },
-      required: true,
+      required: true
     }
   },
-  created() {
-   
-  },
-  methods: {
-  
-  }
+  created() {},
+  methods: {}
 };
 </script>
 

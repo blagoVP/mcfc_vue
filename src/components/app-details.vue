@@ -23,15 +23,15 @@
         Comment
         </button>
         <button
-          :disabled="isOrganizer"
-          :class="{noPointer: isOrganizer}"
+          :disabled="!isOrganizer()"
+          :class="{noPointer: !isOrganizer()}"
           class="btn btn-lg btn-dark"
-          @click="deleteSingleNews"
+          @click="deleteRequest(id)"
         >Delete news
         </button>
         <button
-          :disabled="!isOrganizer"
-          :class="{noPointer: !isOrganizer}"
+          :disabled="isOrganizer()"
+          :class="{noPointer: isOrganizer()}"
           class="btn btn-lg btn-dark "
           @click="likeNews"
         >Like
@@ -41,7 +41,7 @@
       <p class="infoType">Comments:</p>
       <template v-if="comments[0]">
         <div class="trek-description" v-for="(comment, i) in comments" :key="i">
-          <span class="purple">{{comment.user}}:</span>
+          <span class="purple">{{comment.user}}: </span>
           <span>{{comment.comment}}</span>
         </div>
       </template>
@@ -53,56 +53,31 @@
 </template>
 
 <script>
-import axiosInstance from "../axios-collection-request";
+import collectionRequestMixin from "../axios-requests/collection-request-mixin";
 
 export default {
   created() {
-    this.loadSingleNews();
+    this.loadSingleNews(this.id);
   },
+  mixins: [collectionRequestMixin],
   data() {
     return {
       id: this.$route.params.id,
       newsDetails: {},
-      creator: "",
+      creator: this.$route.query.organizer,
       users: null,
       comments: []
-      // isOrganizer: localStorage.getItem('user') === this.creator
     };
   },
   methods: {
-    loadSingleNews() {
-      axiosInstance
-        .get(`/${this.id}`)
-        .then(res => {
-          this.newsDetails = res.data;
-          this.creator = res.data.organizer;
-          this.comments = res.data.comments;
-          console.log(this.creator);
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    },
-    deleteSingleNews() {
-      axiosInstance
-        .delete(`/${this.id}`)
-        .then(this.$router.push("/home"))
-        .catch(err => {
-          console.error(err);
-        });
-    },
     likeNews() {
       this.newsDetails.likes = Number(this.newsDetails.likes);
       this.newsDetails.likes++;
-      axiosInstance
-        .put(`/${this.id}`, this.newsDetails)
-        .then(this.$router.push(`/home`))
-        .catch(err => {
-          console.error(err);
-        });
+      const data = this.newsDetails;
+      this.putRequest(this.id, data);
     },
     isOrganizer() {
-      localStorage.getItem("user") === this.creator;
+      return localStorage.getItem("user") === this.creator;
     },
     commentNews() {
       this.$router.push(`/comment/${this.id}`);
@@ -112,7 +87,6 @@ export default {
 </script>
 
 <style scoped>
-
 .noPointer {
   cursor: default;
 }

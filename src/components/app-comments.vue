@@ -38,13 +38,13 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required } from "vuelidate/lib/validators";
-import axiosInstance from "../axios-collection-request";
+import collectionRequestMixin from "../axios-requests/collection-request-mixin";
 
 export default {
   created() {
-    this.loadSingleNews();
+    this.loadSingleNews(this.id);
   },
-  mixins: [validationMixin],
+  mixins: [validationMixin, collectionRequestMixin],
   data() {
     return {
       id: this.$route.params.id,
@@ -60,19 +60,6 @@ export default {
     }
   },
   methods: {
-    loadSingleNews() {
-      axiosInstance
-        .get(`/${this.id}`)
-        .then(res => {
-          this.newsDetails = res.data;
-          //   this.creator = res.data.organizer;
-          this.comments = res.data.comments;
-          console.log(this.newsDetails);
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    },
     submitHandler() {
       if (this.$v.$invalid) {
         return;
@@ -82,12 +69,8 @@ export default {
         comment: `${this.comment}`
       };
       this.newsDetails.comments.push(newComment);
-      axiosInstance
-        .put(`/${this.id}`, this.newsDetails)
-        .then(this.$router.push(`/details/${this.id}`))
-        .catch(err => {
-          console.error(err);
-        });
+      const data = this.newsDetails;
+      this.putRequest(this.id, data);
     }
   }
 };
