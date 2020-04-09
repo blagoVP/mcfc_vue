@@ -53,10 +53,10 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required } from "vuelidate/lib/validators";
-import axiosInstance from "../../axios-request.js";
+import  userRequestMixin from '../../axios-requests/user-request-mixin.vue';
 
 export default {
-  mixins: [validationMixin],
+  mixins: [validationMixin, userRequestMixin],
   data() {
     return {
       username: "",
@@ -77,21 +77,8 @@ export default {
         return;
       }
       const data = { username: this.username, password: this.password };
-      axiosInstance
-        .post("/login", data)
-        .then(res => {
-          const user = res.data.username;
-          const token = res.data._kmd.authtoken;
-
-          localStorage.setItem("token", token);
-          localStorage.setItem("user", user);
-          this.$emit("onAuth", localStorage.getItem("user"));
-          console.log(res);
-          this.$router.push("/home");
-        })
-        .catch(err => {
-          console.error(err);
-        });
+      const url = "/login";
+      this.postRequest(url, data);
     }
   }
 };
