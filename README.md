@@ -14,10 +14,11 @@ Anonymus user
 
 ## Private part
 
-Authorized user
+Authorized user:
 - User can add news.
 - User has access to all news.
-- User can comment about all published news.
+- All users can comment about all published news.
+- A publisher of the news can delete it, but cannot like it, and vice versa.
 
 ## Design
 
