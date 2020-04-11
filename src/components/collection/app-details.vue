@@ -11,7 +11,7 @@
           <span class="purple">{{newsDetails.likes}}</span>
         </p>
         <p class="infoType">
-          Organizer:
+          Publisher:
           <span>{{creator}}</span>
         </p>
       </div>
@@ -23,15 +23,15 @@
         Comment
         </button>
         <button
-          :disabled="!isOrganizer()"
-          :class="{noPointer: !isOrganizer()}"
+          :disabled="!isPublisher()"
+          :class="{noPointer: !isPublisher()}"
           class="btn btn-lg btn-dark"
           @click="deleteRequest(id)"
         >Delete news
         </button>
         <button
-          :disabled="isOrganizer()"
-          :class="{noPointer: isOrganizer()}"
+          :disabled="isPublisher()"
+          :class="{noPointer: isPublisher()}"
           class="btn btn-lg btn-dark "
           @click="likeNews"
         >Like
@@ -76,7 +76,7 @@ export default {
       const data = this.newsDetails;
       this.putRequest(this.id, data);
     },
-    isOrganizer() {
+    isPublisher() {
       return localStorage.getItem("user") === this.creator;
     },
     commentNews() {
