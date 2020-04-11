@@ -18,7 +18,7 @@ Authorized user:
 - User can add news.
 - User has access to all news.
 - All users can comment about all published news.
-- A publisher of the news can delete it, but cannot like it, and vice versa.
+- A publisher of a single news can delete it, but cannot like it, and vice versa.
 
 ## Design
 
