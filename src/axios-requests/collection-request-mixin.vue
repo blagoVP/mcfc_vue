@@ -16,7 +16,7 @@ export default {
     putRequest(id, data) {
       axiosInstance
         .put(`/${id}`, data)
-        .then(this.$router.push(`/details/${id}`))
+        .then(this.$router.push({path: `/details/${id}`,query: {organizer: data.organizer} }))
         .catch(err => {
           console.error(err);
         });

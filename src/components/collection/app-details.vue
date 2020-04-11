@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import collectionRequestMixin from "../axios-requests/collection-request-mixin";
+import collectionRequestMixin from "../../axios-requests/collection-request-mixin";
 
 export default {
   created() {
