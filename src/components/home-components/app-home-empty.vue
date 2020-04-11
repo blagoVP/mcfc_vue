@@ -3,7 +3,7 @@
       <div class="row">
         <div class="col-md-12">
           <div id="fouronefour">
-            <img class="no-found-picture" src="../assets/city-success.jpg" />
+            <img class="no-found-picture" src="../../assets/city-success.jpg" />
           </div>
           <div class="no-found-template">
             <h1 class="purple">There aren't any news, yet!</h1>

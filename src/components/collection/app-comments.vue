@@ -38,7 +38,7 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required } from "vuelidate/lib/validators";
-import collectionRequestMixin from "../axios-requests/collection-request-mixin";
+import collectionRequestMixin from "../../axios-requests/collection-request-mixin";
 
 export default {
   created() {

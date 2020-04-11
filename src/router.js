@@ -6,7 +6,7 @@ const router = new VueRouter({
         [
             { path: '/', redirect: '/home' },
             {
-                path: '/home', component: () => import('./components/app-home.vue'), beforeEnter(to, from, next) {
+                path: '/home', component: () => import('./components/home-components/app-home.vue'), beforeEnter(to, from, next) {
                     if (localStorage.getItem('user')) {
                         next()
                     } else {
@@ -14,12 +14,12 @@ const router = new VueRouter({
                     }
                 }
             },
-            { path: '/unAuth', component: () => import('./components/app-home-unAuth.vue') },
+            { path: '/unAuth', component: () => import('./components/home-components/app-home-unAuth.vue') },
             { path: '/login', component: () => import('./components/auth/app-login.vue') },
-            { path: '/create', component: () => import('./components/app-create.vue'), beforeEnter: authGuard },
+            { path: '/create', component: () => import('./components/collection/app-create.vue'), beforeEnter: authGuard },
             { path: '/register', component: () => import('./components/auth/app-register.vue') },
-            { path: '/details/:id', component: () => import('./components/app-details.vue'), beforeEnter: authGuard },
-            { path: '/comment/:id', component: () => import('./components/app-comments.vue'), beforeEnter: authGuard },
+            { path: '/details/:id', component: () => import('./components/collection/app-details.vue'), beforeEnter: authGuard },
+            { path: '/comment/:id', component: () => import('./components/collection/app-comments.vue'), beforeEnter: authGuard },
             { path: '*', component: () => import('./components/shared/app-not-found.vue') }
         ]
 });

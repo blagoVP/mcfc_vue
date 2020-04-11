@@ -65,7 +65,7 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, minLength, maxLength, url } from "vuelidate/lib/validators";
-import collectionRequestMixin from "../axios-requests/collection-request-mixin";
+import collectionRequestMixin from "../../axios-requests/collection-request-mixin";
 
 export default {
   mixins: [validationMixin, collectionRequestMixin],

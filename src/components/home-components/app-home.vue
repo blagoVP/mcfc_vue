@@ -12,7 +12,7 @@
 <script>
 import AppHomeFull from "./app-home-full";
 import AppHomeEmpty from "./app-home-empty.vue";
-import collectionRequestMixin from "../axios-requests/collection-request-mixin";
+import collectionRequestMixin from "../../axios-requests/collection-request-mixin";
 
 export default {
   name: "app-home",
