@@ -52,7 +52,19 @@ export default {
         .catch(err => {
           console.error(err);
         });    
-    }
+    },
+    // getAllNewsBefore(next, setData){
+    //   axiosInstance
+    //     .get()
+    //     .then(res => {
+    //       if (res.data.length == 0){
+    //         this.showEmptyPage = true;
+    //       }
+    //       next((vm)=>{
+    //         vm.setData(null, res.data)
+    //       });
+    //     })    
+    // },
     }
   }
 </script>

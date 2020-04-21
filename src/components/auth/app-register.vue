@@ -8,7 +8,7 @@
 
       <div class="form-label-group">
         <input
-          v-model="username"
+          v-model.lazy.trim="username"
           @blur="$v.username.$touch"
           :class="{invalid: $v.username.$error && $v.username.$dirty, valid: !$v.username.$error && $v.username.$dirty}"
           id="inputUsername"
@@ -26,7 +26,7 @@
 
       <div class="form-label-group">
         <input
-          v-model="password"
+          v-model.lazy.trim="password"
           @blur="$v.password.$touch"
           :class="{invalid: $v.password.$error && $v.password.$dirty, valid: !$v.password.$error  && $v.password.$dirty}"
           type="password"
@@ -46,7 +46,7 @@
 
       <div class="form-label-group">
         <input
-          v-model="rePassword"
+          v-model.trim="rePassword"
           @blur="$v.rePassword.$touch"
           :class="{invalid: $v.rePassword.$error && $v.rePassword.$dirty, valid: !$v.rePassword.$error && $v.rePassword.$dirty}"
           type="password"
@@ -77,25 +77,41 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, minLength, sameAs } from "vuelidate/lib/validators";
-import  userRequestMixin from '../../axios-requests/user-request-mixin.vue';
 
 export default {
-  mixins: [validationMixin, userRequestMixin],
+  mixins: [validationMixin],
   data() {
     return {
-      username: "",
-      password: "",
       rePassword: ""
     };
+  },
+  computed: {
+    username: {
+      get() {
+        return this.$store.getters["users/inputUsername"];
+      },
+      set(value) {
+        this.$store.commit("users/updateInputUsername", value);
+      }
+    },
+    password: {
+      get() {
+        return this.$store.getters["users/inputPassword"];
+      },
+      set(value) {
+        this.$store.commit("users/updateInputPassword", value);
+      }
+    }
   },
   methods: {
     submitHandler() {
       if (this.$v.$invalid) {
         return;
       }
-      const data = { username: this.username, password: this.password };
       const url = "/";
-      this.postRequest(url, data);
+      this.$store.dispatch("users/postRequest", url);
+      this.$emit("onAuth", this.$store.getters["users/user"]);
+      this.$router.push("/home");
     }
   },
   validations: {
@@ -110,6 +126,10 @@ export default {
     rePassword: {
       sameAs: sameAs("password")
     }
+  },
+  beforeDestroy() {
+    this.$store.commit("users/updateInputPassword", null);
+    this.$store.commit("users/updateInputUsername", null);
   }
 };
 </script>

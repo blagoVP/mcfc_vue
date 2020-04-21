@@ -15,33 +15,26 @@
           <span>{{creator}}</span>
         </p>
       </div>
-      <div class = "buttons-together">
-        <button 
-        class="btn btn-lg btn-dark"
-        @click="commentNews"
-        >
-        Comment
-        </button>
+      <div class="buttons-together">
+        <button class="btn btn-lg btn-dark" @click="commentNews">Comment</button>
         <button
           :disabled="!isPublisher()"
           :class="{noPointer: !isPublisher()}"
           class="btn btn-lg btn-dark"
           @click="deleteRequest(id)"
-        >Delete news
-        </button>
+        >Delete news</button>
         <button
           :disabled="isPublisher()"
           :class="{noPointer: isPublisher()}"
-          class="btn btn-lg btn-dark "
+          class="btn btn-lg btn-dark"
           @click="likeNews"
-        >Like
-        </button>
+        >Like</button>
       </div>
       <div>----------------------</div>
       <p class="infoType">Comments:</p>
       <template v-if="comments[0]">
         <div class="trek-description" v-for="(comment, i) in comments" :key="i">
-          <span class="purple">{{comment.user}}: </span>
+          <span class="purple">{{comment.user}}:</span>
           <span>{{comment.comment}}</span>
         </div>
       </template>
@@ -54,8 +47,18 @@
 
 <script>
 import collectionRequestMixin from "../../axios-requests/collection-request-mixin";
+import axiosInstance from "../../axios-requests/axios-collection-request";
 
 export default {
+  beforeRouteEnter(to, from, next) {
+    axiosInstance
+        .get(`/${to.params.id}`)
+        .then(res => {
+           next((vm)=>{
+            vm.setData(null, res.data)
+          });
+        });
+  },
   created() {
     this.loadSingleNews(this.id);
   },
@@ -81,6 +84,16 @@ export default {
     },
     commentNews() {
       this.$router.push(`/comment/${this.id}`);
+    },
+    setData(err, data){
+      if (err){
+        // this.err = err;
+        console.log('vliza')
+       alert(err);
+      } else{
+          this.newsDetails = data;
+          this.comments = data.comments;
+      }
     }
   }
 };

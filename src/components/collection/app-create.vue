@@ -7,7 +7,7 @@
 
     <div class="form-label-group">
       <input
-        v-model="title"
+        v-model.lazy.trim="title"
         @blur="$v.title.$touch"
         :class="{invalid: $v.title.$error && $v.title.$dirty, valid: !$v.title.$error && $v.title.$dirty}"
         class="form-control"
@@ -26,7 +26,7 @@
 
     <div class="form-label-group">
       <textarea
-        v-model="content"
+        v-model.lazy="content"
         @blur="$v.content.$touch"
         :class="{invalid: $v.content.$error && $v.content.$dirty, valid: !$v.content.$error && $v.content.$dirty}"
         class="form-control"

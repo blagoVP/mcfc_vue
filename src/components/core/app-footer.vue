@@ -22,7 +22,7 @@
         c0.809,0,1.538-0.487,1.848-1.234S70.604,46.826,70.031,46.254z"
         />
       </svg>
-      <p class="footer d-block mb-3">© The Trekking Zone - 2019. We can make your dreams come true!</p>
+      <p class="footer d-block mb-3">© MCFC - 2020. We can make your dreams come true!</p>
     </div>
   </footer>
 </template>

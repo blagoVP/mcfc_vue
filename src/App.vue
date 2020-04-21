@@ -1,14 +1,14 @@
 <template>
   <div>
-    <app-navigation @onAuth="hasUser = $event" :hasUser="hasUser" ></app-navigation>
+    <app-navigation></app-navigation>
     <router-view @onAuth="hasUser = $event"></router-view>
     <app-footer></app-footer>
   </div>
 </template>
 
 <script>
-import AppNavigation from './components/core/app-navigation.vue';
-import AppFooter from './components/core/app-footer.vue'
+import AppNavigation from "./components/core/app-navigation.vue";
+import AppFooter from "./components/core/app-footer.vue";
 
 export default {
   name: "App",
@@ -18,8 +18,13 @@ export default {
   },
   data: function() {
     return {
-      hasUser: localStorage.getItem('user'),
+
     };
+  },
+  computed: {
+    hasUser() {
+      return this.$store.getters["users/user"];
+    }
   }
 };
 </script>
@@ -98,7 +103,7 @@ a {
   text-align: center;
   border-radius: 15px;
   font-size: 18px;
-  padding: 0.5rem 0;  
+  padding: 0.5rem 0;
   font-weight: bold;
 }
 .card-image {
@@ -106,7 +111,7 @@ a {
 }
 .card-text {
   top: 10px;
-  font-size: 15px
+  font-size: 15px;
 }
 
 a.trek-details:hover {
@@ -331,22 +336,22 @@ img {
   color: rgba(255, 255, 255, 0.513);
 }
 
-input.valid{
+input.valid {
   border-color: green;
 }
 
-input.invalid{
+input.invalid {
   border-color: red;
 }
 
-textarea.invalid{
+textarea.invalid {
   border-color: red;
 }
-textarea.valid{
+textarea.valid {
   border-color: green;
 }
 
-p.error-message{
+p.error-message {
   color: red;
   font-style: italic;
   text-align: center;
@@ -355,5 +360,4 @@ p.error-message{
 .purple {
   color: rgb(128, 0, 79);
 }
-
 </style>

@@ -6,7 +6,7 @@
 
     <div class="form-label-group">
       <input
-        v-model="username"
+        v-model.lazy.trim="username"
         @blur="$v.username.$touch"
         :class="{invalid: $v.username.$error && $v.username.$dirty, valid: !$v.username.$error && $v.username.$dirty}"
         type="text"
@@ -23,7 +23,7 @@
 
     <div class="form-label-group">
       <input
-        v-model="password"
+        v-model.trim="password"
         @blur="$v.password.$touch"
         :class="{invalid: $v.password.$error && $v.password.$dirty, valid: !$v.password.$error && $v.password.$dirty}"
         type="password"
@@ -53,15 +53,30 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required } from "vuelidate/lib/validators";
-import  userRequestMixin from '../../axios-requests/user-request-mixin.vue';
 
 export default {
-  mixins: [validationMixin, userRequestMixin],
+  mixins: [validationMixin],
   data() {
     return {
-      username: "",
-      password: ""
     };
+  },
+  computed: {
+    username: {
+      get() {
+        return this.$store.getters["users/inputUsername"];
+      },
+      set(value) {
+        this.$store.commit("users/updateInputUsername", value);
+      }
+    },
+    password: {
+      get() {
+        return this.$store.getters["users/inputPassword"];
+      },
+      set(value) {
+        this.$store.commit("users/updateInputPassword", value);
+      }
+    }
   },
   validations: {
     username: {
@@ -76,10 +91,15 @@ export default {
       if (this.$v.$invalid) {
         return;
       }
-      const data = { username: this.username, password: this.password };
       const url = "/login";
-      this.postRequest(url, data);
+      this.$store.dispatch("users/postRequest", url);
+      this.$emit("onAuth", this.$store.getters["users/user"]);
+      this.$router.push("/home");
     }
+  },
+  beforeDestroy() {
+    this.$store.commit("users/updateInputPassword", null);
+    this.$store.commit("users/updateInputUsername", null);
   }
 };
 </script>

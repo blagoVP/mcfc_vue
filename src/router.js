@@ -1,4 +1,5 @@
 import VueRouter from 'vue-router';
+import store from './store/users';
 
 const router = new VueRouter({
     mode: 'history',
@@ -7,7 +8,7 @@ const router = new VueRouter({
             { path: '/', redirect: '/home' },
             {
                 path: '/home', component: () => import('./components/home-components/app-home.vue'), beforeEnter(to, from, next) {
-                    if (localStorage.getItem('user')) {
+                    if (store.getters['users/user']) {
                         next()
                     } else {
                         next('/unAuth')
